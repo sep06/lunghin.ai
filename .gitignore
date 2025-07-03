@@ -1,0 +1,16 @@
+# Arquivos temporários do Python
+__pycache__/
+*.pyc
+
+# Arquivos de ambiente e segredos
+.env
+
+# Arquivos grandes ou binários que não precisam ir para o Git
+*.pdf
+
+# Pastas do VSCode (opcional)
+.vscode/
+
+# Arquivos temporários de SO
+.DS_Store
+Thumbs.db
