@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Analisador de Contratos</title>
+</head>
+<body style="font-family: sans-serif; max-width: 600px; margin: 40px auto;">
+  <h1>🔍 Analisador de Contratos</h1>
+
+  <form id="uploadForm">
+    <input type="file" name="documento" accept=".pdf,.docx" required />
+    <button type="submit">Analisar Contrato</button>
+  </form>
+
+  <hr />
+
+  <pre id="output" style="background:#f0f0f0; padding:20px;"></pre>
+
+  <script>
+    const form = document.getElementById('uploadForm');
+    const output = document.getElementById('output');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      output.textContent = 'Enviando...';
+
+      try {
+        const res = await fetch('http://localhost:8000/executar-pipeline', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const data = await res.json();
+        output.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        output.textContent = 'Erro ao enviar arquivo.';
+      }
+    });
+  </script>
+</body>
+</html>
