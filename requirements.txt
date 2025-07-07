@@ -1,0 +1,12 @@
+pip install fitz
+pip install PyMuPDF
+pip install paddleocr
+pip install opencv-python
+pip install numpy
+pip install Pillow
+pip install spacy
+python -m spacy download pt_core_news_sm
+pip install docx2txt
+pip install fpdf
+pip install fastapi
+pip install uvicorn

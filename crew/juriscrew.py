@@ -5,14 +5,16 @@ processo possa ser executado de forma encadeada e modular. O pipeline
 atualmente conta com:
 - Agente de ingestão
 - Agente de construção de grafo
-- Agente revisor
+- Agente revisor técnico
 - Agente parecerista
+- Agente exportador (PDF)
 """
 
 from agents.ingestor import processar_documento
 from agents.graph_builder import construir_grafo
 from agents.revisor_contratos import revisar_contrato
 from agents.parecerista import produzir_parecer
+from agents.exportador import gerar_relatorio_pdf
 
 
 def executar_ingestao(caminho_arquivo: str) -> dict:
@@ -35,25 +37,38 @@ def executar_parecerista(entidades: list, relacoes: list, parecer: dict) -> dict
     return produzir_parecer(entidades, relacoes, parecer)
 
 
+def executar_exportador(
+    dados_ingestao: dict,
+    grafo: dict,
+    parecer_tecnico: dict,
+    parecer_final: dict,
+) -> str:
+    """Gera o relatório PDF consolidado e retorna o caminho do arquivo."""
+    return gerar_relatorio_pdf(dados_ingestao, grafo, parecer_tecnico, parecer_final)
+
+
 def run_pipeline(caminho_arquivo: str) -> dict:
-    """Executa o pipeline completo: ingestão → grafo → revisão → parecer final."""
+    """Executa o pipeline completo: ingestão → grafo → revisão → parecer → exportação."""
 
     # 1) Ingestão do documento
     dados_ingestao = executar_ingestao(caminho_arquivo)
 
-    # 2) Construção do grafo cognitivo com o texto extraído
+    # 2) Construção do grafo jurídico
     grafo = executar_graph_builder(dados_ingestao["texto"])
 
-    # 3) Revisão jurídica com base no grafo
+    # 3) Revisão jurídica técnica
     parecer_tecnico = executar_revisor(grafo["entidades"], grafo["relacoes"])
 
-    # 4) Geração do parecer jurídico final
+    # 4) Geração do parecer final
     parecer_final = executar_parecerista(grafo["entidades"], grafo["relacoes"], parecer_tecnico)
 
-    # 5) Consolida a saída em um único dicionário de resposta
+    # 5) Geração do relatório PDF final
+    caminho_pdf = executar_exportador(dados_ingestao, grafo, parecer_tecnico, parecer_final)
+
+    # 6) Resposta consolidada
     return {
         "status": "ok",
-        "etapa": "ingestor + graph_builder + revisor + parecerista",
+        "etapa": "pipeline completo",
         "tipo_entrada": dados_ingestao["tipo_entrada"],
         "texto": dados_ingestao.get("texto"),
         "entidades": grafo["entidades"],
@@ -61,4 +76,5 @@ def run_pipeline(caminho_arquivo: str) -> dict:
         "graph_id": grafo["graph_id"],
         "parecer_tecnico": parecer_tecnico,
         "parecer_final": parecer_final,
+        "relatorio_pdf": caminho_pdf,
     }
