@@ -10,6 +10,7 @@ forma automatizada.
 from __future__ import annotations
 
 from typing import Dict, List
+import re
 
 MANDATORY_CLAUSES = [
     "OBJETO",
@@ -23,9 +24,16 @@ MANDATORY_CLAUSES = [
 
 
 def verificar_clausulas_obrigatorias(entidades: List[Dict[str, str]]) -> List[str]:
-    """Retorna a lista de clausulas obrigatorias ausentes."""
+    """Retorna a lista de clausulas obrigatorias ausentes, com fallback semantico para PRAZO."""
 
     labels = {e.get("label") for e in entidades}
+    texto_completo = " ".join(e["texto"] for e in entidades)
+
+    # Fallback para identificar "PRAZO" com base em menções a "vigência"
+    if "PRAZO" not in labels:
+        if re.search(r"\bvig[êe]ncia\b", texto_completo, re.I) or re.search(r"prazo indeterminado", texto_completo, re.I):
+            labels.add("PRAZO")
+
     return [cl for cl in MANDATORY_CLAUSES if cl not in labels]
 
 
