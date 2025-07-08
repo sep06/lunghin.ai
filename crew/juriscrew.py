@@ -17,7 +17,6 @@ from agents.ingestores.ingestor import processar_documento
 from agents.extratores.graph_builder import construir_grafo
 from agents.revisores.revisor_contratos import revisar_contrato
 from agents.pareceristas.parecerista import produzir_parecer
-from agents.interpretadores.avaliador_llm import avaliar_clausulas_com_llm
 from agents.exportadores.relatorio_pdf import gerar_relatorio_pdf
 from agents.interpretadores.avaliador_llm import avaliar_clausulas_com_llm
 
@@ -41,14 +40,7 @@ def executar_exportador(
     parecer_final: dict,
     avaliacoes_llm: list,
 ) -> str:
-    return gerar_relatorio_pdf(
-        dados_ingestao,
-        grafo,
-        parecer_tecnico,
-        parecer_final,
-        avaliacoes_llm,
-    )
-
+    return gerar_relatorio_pdf(dados_ingestao, grafo, parecer_tecnico, parecer_final, avaliacoes_llm)
 
 def run_pipeline(caminho_arquivo: str) -> dict:
     print("🚀 Iniciando pipeline")
@@ -61,23 +53,16 @@ def run_pipeline(caminho_arquivo: str) -> dict:
     parecer_tecnico = executar_revisor(grafo["entidades"], grafo["relacoes"])
     print("✅ Etapa 3: revisão técnica concluída")
 
- gd4zwg-codex/debug-internal-server-error-500
-
     avaliacoes_llm = avaliar_clausulas_com_llm(grafo["entidades"])
     print("🧠 Etapa 3.5: avaliação simbólica LLM concluída")
- main
-    parecer_final = executar_parecerista(
-        grafo["entidades"], grafo["relacoes"], parecer_tecnico
-    )
-    print("✅ Etapa 4: parecer final gerado")
 
-    avaliacoes_llm = avaliar_clausulas_com_llm(grafo["entidades"])
-    print("✅ Etapa 5: avaliações LLM concluídas")
+    parecer_final = executar_parecerista(grafo["entidades"], grafo["relacoes"], parecer_tecnico)
+    print("✅ Etapa 4: parecer final gerado")
 
     caminho_pdf = executar_exportador(
         dados_ingestao, grafo, parecer_tecnico, parecer_final, avaliacoes_llm
     )
-    print(f"✅ Etapa 6: relatório PDF gerado em {caminho_pdf}")
+    print(f"✅ Etapa 5: relatório PDF gerado em {caminho_pdf}")
 
     resultado = {
         "status": "ok",
