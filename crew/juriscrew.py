@@ -41,7 +41,13 @@ def executar_exportador(
     parecer_final: dict,
     avaliacoes_llm: list,
 ) -> str:
-    return gerar_relatorio_pdf(dados_ingestao, grafo, parecer_tecnico, parecer_final)
+    return gerar_relatorio_pdf(
+        dados_ingestao,
+        grafo,
+        parecer_tecnico,
+        parecer_final,
+        avaliacoes_llm,
+    )
 
 
 def run_pipeline(caminho_arquivo: str) -> dict:
@@ -55,16 +61,23 @@ def run_pipeline(caminho_arquivo: str) -> dict:
     parecer_tecnico = executar_revisor(grafo["entidades"], grafo["relacoes"])
     print("✅ Etapa 3: revisão técnica concluída")
 
+ gd4zwg-codex/debug-internal-server-error-500
+
     avaliacoes_llm = avaliar_clausulas_com_llm(grafo["entidades"])
     print("🧠 Etapa 3.5: avaliação simbólica LLM concluída")
-
+ main
     parecer_final = executar_parecerista(
         grafo["entidades"], grafo["relacoes"], parecer_tecnico
     )
     print("✅ Etapa 4: parecer final gerado")
 
-    caminho_pdf = executar_exportador(dados_ingestao, grafo, parecer_tecnico, parecer_final)
-    print(f"✅ Etapa 5: relatório PDF gerado em {caminho_pdf}")
+    avaliacoes_llm = avaliar_clausulas_com_llm(grafo["entidades"])
+    print("✅ Etapa 5: avaliações LLM concluídas")
+
+    caminho_pdf = executar_exportador(
+        dados_ingestao, grafo, parecer_tecnico, parecer_final, avaliacoes_llm
+    )
+    print(f"✅ Etapa 6: relatório PDF gerado em {caminho_pdf}")
 
     resultado = {
         "status": "ok",

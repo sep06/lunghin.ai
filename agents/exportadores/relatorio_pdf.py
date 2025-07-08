@@ -93,6 +93,10 @@ def _adicionar_avaliacoes_llm(pdf: FPDF, avaliacoes: List[Dict[str, Any]], fonte
     pdf.set_font(fonte, "", 12)
     pdf.cell(0, 10, "Avaliações LLM", ln=1)
     for av in avaliacoes or []:
+gd4zwg-codex/debug-internal-server-error-500
+        print(f"[PDF] avaliacao LLM: {av}")
+
+     main
         comentario = av.get("comentario") or ""
         tipo = av.get("tipo") or "?"
         risco = av.get("risco") or ""
@@ -142,6 +146,10 @@ def gerar_relatorio_pdf(
     }
 
     avaliacoes_seguras = avaliacoes_llm or []
+gd4zwg-codex/debug-internal-server-error-500
+    print(f"[PDF] Total avaliacoes LLM: {len(avaliacoes_seguras)}")
+
+ main
 
     try:
         _adicionar_titulo(pdf, fonte)
