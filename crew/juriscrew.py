@@ -12,29 +12,27 @@ atualmente conta com:
 
 import json
 from pathlib import Path
+
 from agents.ingestores.ingestor import processar_documento
 from agents.extratores.graph_builder import construir_grafo
 from agents.revisores.revisor_contratos import revisar_contrato
 from agents.pareceristas.parecerista import produzir_parecer
 from agents.interpretadores.avaliador_llm import avaliar_clausulas_com_llm
 from agents.exportadores.relatorio_pdf import gerar_relatorio_pdf
+from agents.interpretadores.avaliador_llm import avaliar_clausulas_com_llm
 
 
 def executar_ingestao(caminho_arquivo: str) -> dict:
     return processar_documento(caminho_arquivo)
 
-
 def executar_graph_builder(texto: str) -> dict:
     return construir_grafo(texto)
-
 
 def executar_revisor(entidades: list, relacoes: list) -> dict:
     return revisar_contrato(entidades, relacoes)
 
-
 def executar_parecerista(entidades: list, relacoes: list, parecer: dict) -> dict:
     return produzir_parecer(entidades, relacoes, parecer)
-
 
 def executar_exportador(
     dados_ingestao: dict,
@@ -63,6 +61,11 @@ def run_pipeline(caminho_arquivo: str) -> dict:
     parecer_tecnico = executar_revisor(grafo["entidades"], grafo["relacoes"])
     print("✅ Etapa 3: revisão técnica concluída")
 
+ gd4zwg-codex/debug-internal-server-error-500
+
+    avaliacoes_llm = avaliar_clausulas_com_llm(grafo["entidades"])
+    print("🧠 Etapa 3.5: avaliação simbólica LLM concluída")
+ main
     parecer_final = executar_parecerista(
         grafo["entidades"], grafo["relacoes"], parecer_tecnico
     )
@@ -97,3 +100,6 @@ def run_pipeline(caminho_arquivo: str) -> dict:
         print(f"❌ Erro ao serializar JSON final: {e}")
 
     return resultado
+
+
+__all__ = ["run_pipeline"]
