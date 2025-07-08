@@ -5,7 +5,7 @@ parecer técnico e parecer final. Foco em contratos de prestação de serviços.
 """
 
 import os
-from typing import Dict, List
+from typing import Dict, List, Any
 from fpdf import FPDF
 from pathlib import Path
 
@@ -88,11 +88,25 @@ def _adicionar_parecer_final(pdf: FPDF, parecer_final: Dict[str, str], fonte: st
     pdf.multi_cell(0, 8, "Status: " + parecer_final.get("status_final", ""))
     pdf.ln(2)
 
+
+def _adicionar_avaliacoes_llm(pdf: FPDF, avaliacoes: List[Dict[str, Any]], fonte: str) -> None:
+    pdf.set_font(fonte, "", 12)
+    pdf.cell(0, 10, "Avaliações LLM", ln=1)
+    for av in avaliacoes or []:
+        print(f"[PDF] avaliacao LLM: {av}")
+        comentario = av.get("comentario") or ""
+        tipo = av.get("tipo") or "?"
+        risco = av.get("risco") or ""
+        linha = f"{tipo}: {comentario} (risco: {risco})"
+        pdf.multi_cell(0, 8, linha)
+    pdf.ln(2)
+
 def gerar_relatorio_pdf(
     dados_ingestao: Dict[str, str],
     grafo: Dict[str, List[Dict[str, str]]],
     parecer_tecnico: Dict[str, List[str]],
     parecer_final: Dict[str, str],
+    avaliacoes_llm: List[Dict[str, Any]] | None = None,
 ) -> str:
     """Gera o relatório consolidado em PDF e devolve o caminho absoluto."""
 
@@ -128,12 +142,16 @@ def gerar_relatorio_pdf(
         "status_final": str(parecer_final.get("status_final", "")),
     }
 
+    avaliacoes_seguras = avaliacoes_llm or []
+    print(f"[PDF] Total avaliacoes LLM: {len(avaliacoes_seguras)}")
+
     try:
         _adicionar_titulo(pdf, fonte)
         _adicionar_secao_dados(pdf, dados_seguro, fonte)
         _adicionar_entidades_relacoes(pdf, grafo_seguro, fonte)
         _adicionar_parecer_tecnico(pdf, parecer_tecnico_seguro, fonte)
         _adicionar_parecer_final(pdf, parecer_final_seguro, fonte)
+        _adicionar_avaliacoes_llm(pdf, avaliacoes_seguras, fonte)
     except Exception as exc:
         print(f"❌ Erro ao preencher PDF: {exc}")
         raise

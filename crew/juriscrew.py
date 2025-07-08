@@ -16,6 +16,7 @@ from agents.ingestores.ingestor import processar_documento
 from agents.extratores.graph_builder import construir_grafo
 from agents.revisores.revisor_contratos import revisar_contrato
 from agents.pareceristas.parecerista import produzir_parecer
+from agents.interpretadores.avaliador_llm import avaliar_clausulas_com_llm
 from agents.exportadores.relatorio_pdf import gerar_relatorio_pdf
 
 
@@ -40,8 +41,15 @@ def executar_exportador(
     grafo: dict,
     parecer_tecnico: dict,
     parecer_final: dict,
+    avaliacoes_llm: list,
 ) -> str:
-    return gerar_relatorio_pdf(dados_ingestao, grafo, parecer_tecnico, parecer_final)
+    return gerar_relatorio_pdf(
+        dados_ingestao,
+        grafo,
+        parecer_tecnico,
+        parecer_final,
+        avaliacoes_llm,
+    )
 
 
 def run_pipeline(caminho_arquivo: str) -> dict:
@@ -55,11 +63,18 @@ def run_pipeline(caminho_arquivo: str) -> dict:
     parecer_tecnico = executar_revisor(grafo["entidades"], grafo["relacoes"])
     print("✅ Etapa 3: revisão técnica concluída")
 
-    parecer_final = executar_parecerista(grafo["entidades"], grafo["relacoes"], parecer_tecnico)
+    parecer_final = executar_parecerista(
+        grafo["entidades"], grafo["relacoes"], parecer_tecnico
+    )
     print("✅ Etapa 4: parecer final gerado")
 
-    caminho_pdf = executar_exportador(dados_ingestao, grafo, parecer_tecnico, parecer_final)
-    print(f"✅ Etapa 5: relatório PDF gerado em {caminho_pdf}")
+    avaliacoes_llm = avaliar_clausulas_com_llm(grafo["entidades"])
+    print("✅ Etapa 5: avaliações LLM concluídas")
+
+    caminho_pdf = executar_exportador(
+        dados_ingestao, grafo, parecer_tecnico, parecer_final, avaliacoes_llm
+    )
+    print(f"✅ Etapa 6: relatório PDF gerado em {caminho_pdf}")
 
     resultado = {
         "status": "ok",
@@ -71,6 +86,7 @@ def run_pipeline(caminho_arquivo: str) -> dict:
         "graph_id": grafo["graph_id"],
         "parecer_tecnico": parecer_tecnico,
         "parecer_final": parecer_final,
+        "avaliacoes_llm": avaliacoes_llm,
         "relatorio_pdf": str(caminho_pdf) if isinstance(caminho_pdf, Path) else caminho_pdf,
     }
 
