@@ -10,30 +10,28 @@ atualmente conta com:
 - Agente exportador (PDF)
 """
 
+import json
+from pathlib import Path
 from agents.ingestores.ingestor import processar_documento
 from agents.extratores.graph_builder import construir_grafo
 from agents.revisores.revisor_contratos import revisar_contrato
 from agents.pareceristas.parecerista import produzir_parecer
-from agents.exportadores.exportador import gerar_relatorio_pdf
+from agents.exportadores.relatorio_pdf import gerar_relatorio_pdf
 
 
 def executar_ingestao(caminho_arquivo: str) -> dict:
-    """Executa o agente de ingestão e retorna seus dados."""
     return processar_documento(caminho_arquivo)
 
 
 def executar_graph_builder(texto: str) -> dict:
-    """Executa o agente de construção do grafo a partir do texto."""
     return construir_grafo(texto)
 
 
 def executar_revisor(entidades: list, relacoes: list) -> dict:
-    """Executa o agente revisor e retorna o parecer técnico."""
     return revisar_contrato(entidades, relacoes)
 
 
 def executar_parecerista(entidades: list, relacoes: list, parecer: dict) -> dict:
-    """Executa o agente parecerista e retorna o parecer final."""
     return produzir_parecer(entidades, relacoes, parecer)
 
 
@@ -43,30 +41,27 @@ def executar_exportador(
     parecer_tecnico: dict,
     parecer_final: dict,
 ) -> str:
-    """Gera o relatório PDF consolidado e retorna o caminho do arquivo."""
     return gerar_relatorio_pdf(dados_ingestao, grafo, parecer_tecnico, parecer_final)
 
 
 def run_pipeline(caminho_arquivo: str) -> dict:
-    """Executa o pipeline completo: ingestão → grafo → revisão → parecer → exportação."""
-
-    # 1) Ingestão do documento
+    print("🚀 Iniciando pipeline")
     dados_ingestao = executar_ingestao(caminho_arquivo)
+    print("✅ Etapa 1: ingestão concluída")
 
-    # 2) Construção do grafo jurídico
     grafo = executar_graph_builder(dados_ingestao["texto"])
+    print("✅ Etapa 2: grafo construído")
 
-    # 3) Revisão jurídica técnica
     parecer_tecnico = executar_revisor(grafo["entidades"], grafo["relacoes"])
+    print("✅ Etapa 3: revisão técnica concluída")
 
-    # 4) Geração do parecer final
     parecer_final = executar_parecerista(grafo["entidades"], grafo["relacoes"], parecer_tecnico)
+    print("✅ Etapa 4: parecer final gerado")
 
-    # 5) Geração do relatório PDF final
     caminho_pdf = executar_exportador(dados_ingestao, grafo, parecer_tecnico, parecer_final)
+    print(f"✅ Etapa 5: relatório PDF gerado em {caminho_pdf}")
 
-    # 6) Resposta consolidada
-    return {
+    resultado = {
         "status": "ok",
         "etapa": "pipeline completo",
         "tipo_entrada": dados_ingestao["tipo_entrada"],
@@ -76,5 +71,13 @@ def run_pipeline(caminho_arquivo: str) -> dict:
         "graph_id": grafo["graph_id"],
         "parecer_tecnico": parecer_tecnico,
         "parecer_final": parecer_final,
-        "relatorio_pdf": caminho_pdf,
+        "relatorio_pdf": str(caminho_pdf) if isinstance(caminho_pdf, Path) else caminho_pdf,
     }
+
+    try:
+        print("📦 Resultado final:")
+        print(json.dumps(resultado, indent=2, ensure_ascii=False))
+    except Exception as e:
+        print(f"❌ Erro ao serializar JSON final: {e}")
+
+    return resultado
