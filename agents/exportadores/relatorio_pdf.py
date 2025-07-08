@@ -16,7 +16,10 @@ def _criar_pasta_reports() -> None:
     os.makedirs("reports", exist_ok=True)
 
 def _texto_resumido(texto: str, limite: int = 500) -> str:
-    texto_limpo = texto.strip()
+    """Retorna um resumo seguro do texto informado."""
+    if not texto:
+        return ""
+    texto_limpo = str(texto).strip()
     return texto_limpo[:limite] + "..." if len(texto_limpo) > limite else texto_limpo
 
 def _carregar_fonte(pdf: FPDF) -> str:
@@ -91,23 +94,58 @@ def gerar_relatorio_pdf(
     parecer_tecnico: Dict[str, List[str]],
     parecer_final: Dict[str, str],
 ) -> str:
+    """Gera o relatório consolidado em PDF e devolve o caminho absoluto."""
+
+    print("[PDF] Iniciando geração do relatório")
     _criar_pasta_reports()
+
     pdf = FPDF()
     pdf.add_page()
 
     fonte = _carregar_fonte(pdf)
 
+    # Sanitização preventiva dos dados
+    dados_seguro = {
+        "tipo_entrada": str(dados_ingestao.get("tipo_entrada", "")) if dados_ingestao else "",
+        "texto": dados_ingestao.get("texto") or "",
+    }
+
+    grafo_seguro = {
+        "entidades": grafo.get("entidades") or [],
+        "relacoes": grafo.get("relacoes") or [],
+        "graph_id": grafo.get("graph_id") or "sem_id",
+    }
+
+    parecer_tecnico_seguro = {
+        "clausulas_faltantes": parecer_tecnico.get("clausulas_faltantes") or [],
+        "inconsistencias": parecer_tecnico.get("inconsistencias") or [],
+        "riscos": parecer_tecnico.get("riscos") or [],
+    }
+
+    parecer_final_seguro = {
+        "parecer_estruturado": str(parecer_final.get("parecer_estruturado", "")),
+        "recomendacao": str(parecer_final.get("recomendacao", "")),
+        "status_final": str(parecer_final.get("status_final", "")),
+    }
+
     try:
         _adicionar_titulo(pdf, fonte)
-        _adicionar_secao_dados(pdf, dados_ingestao, fonte)
-        _adicionar_entidades_relacoes(pdf, grafo, fonte)
-        _adicionar_parecer_tecnico(pdf, parecer_tecnico, fonte)
-        _adicionar_parecer_final(pdf, parecer_final, fonte)
+        _adicionar_secao_dados(pdf, dados_seguro, fonte)
+        _adicionar_entidades_relacoes(pdf, grafo_seguro, fonte)
+        _adicionar_parecer_tecnico(pdf, parecer_tecnico_seguro, fonte)
+        _adicionar_parecer_final(pdf, parecer_final_seguro, fonte)
     except Exception as exc:
-        print(f"Erro ao gerar relatorio: {exc}")
+        print(f"❌ Erro ao preencher PDF: {exc}")
+        raise
 
-    caminho = os.path.join("reports", f"relatorio_{grafo.get('graph_id')}.pdf")
-    pdf.output(caminho)
-    return caminho
+    caminho = Path("reports") / f"relatorio_{grafo_seguro['graph_id']}.pdf"
+    try:
+        pdf.output(caminho.as_posix())
+        caminho_abs = str(caminho.resolve())
+        print(f"[PDF] Relatório salvo em {caminho_abs}")
+        return caminho_abs
+    except Exception as exc:
+        print(f"❌ Erro ao salvar PDF: {exc}")
+        raise
 
 __all__ = ["gerar_relatorio_pdf"]
