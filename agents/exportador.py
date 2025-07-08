@@ -10,8 +10,10 @@ from __future__ import annotations
 import os
 from typing import Dict, List
 from fpdf import FPDF
+from pathlib import Path
 
-FONT_PATH = "fonts/DejaVuSans.ttf"
+_DEFAULT_FONT = "Helvetica"
+FONT_PATH = Path(__file__).resolve().parent.parent / "fonts" / "DejaVuSans.ttf"
 
 def _criar_pasta_reports() -> None:
     os.makedirs("reports", exist_ok=True)
@@ -20,22 +22,34 @@ def _texto_resumido(texto: str, limite: int = 500) -> str:
     texto_limpo = texto.strip()
     return texto_limpo[:limite] + "..." if len(texto_limpo) > limite else texto_limpo
 
-def _adicionar_titulo(pdf: FPDF) -> None:
-    pdf.add_font("DejaVu", "", FONT_PATH, uni=True)
-    pdf.set_font("DejaVu", "", 16)
+def _carregar_fonte(pdf: FPDF) -> str:
+    """Tenta carregar a fonte customizada e retorna o nome da fonte usada."""
+    if FONT_PATH.exists():
+        try:
+            pdf.add_font("DejaVu", "", str(FONT_PATH), uni=True)
+            return "DejaVu"
+        except Exception as exc:  # noqa: BLE001
+            print(f"Falha ao carregar fonte personalizada: {exc}")
+    else:
+        print("Fonte personalizada nao encontrada, usando padrao")
+    return _DEFAULT_FONT
+
+
+def _adicionar_titulo(pdf: FPDF, fonte: str) -> None:
+    pdf.set_font(fonte, "", 16)
     pdf.cell(0, 10, "Relatório de Análise Contratual", ln=1, align="C")
     pdf.ln(5)
 
-def _adicionar_secao_dados(pdf: FPDF, dados_ingestao: Dict[str, str]) -> None:
-    pdf.set_font("DejaVu", "", 12)
+def _adicionar_secao_dados(pdf: FPDF, dados_ingestao: Dict[str, str], fonte: str) -> None:
+    pdf.set_font(fonte, "", 12)
     pdf.cell(0, 10, "Dados do Contrato", ln=1)
     pdf.multi_cell(0, 10, f"Tipo de entrada: {dados_ingestao.get('tipo_entrada')}")
     texto = _texto_resumido(dados_ingestao.get("texto", ""))
     pdf.multi_cell(0, 10, texto)
     pdf.ln(2)
 
-def _adicionar_entidades_relacoes(pdf: FPDF, grafo: Dict[str, List[Dict[str, str]]]) -> None:
-    pdf.set_font("DejaVu", "", 12)
+def _adicionar_entidades_relacoes(pdf: FPDF, grafo: Dict[str, List[Dict[str, str]]], fonte: str) -> None:
+    pdf.set_font(fonte, "", 12)
     pdf.cell(0, 10, "Entidades", ln=1)
     for ent in grafo.get("entidades", []):
         linha = f"{ent.get('label')}: {ent.get('texto')}"
@@ -48,8 +62,8 @@ def _adicionar_entidades_relacoes(pdf: FPDF, grafo: Dict[str, List[Dict[str, str
         pdf.multi_cell(0, 8, linha)
     pdf.ln(2)
 
-def _adicionar_parecer_tecnico(pdf: FPDF, parecer_tecnico: Dict[str, List[str]]) -> None:
-    pdf.set_font("DejaVu", "", 12)
+def _adicionar_parecer_tecnico(pdf: FPDF, parecer_tecnico: Dict[str, List[str]], fonte: str) -> None:
+    pdf.set_font(fonte, "", 12)
     pdf.cell(0, 10, "Parecer Técnico", ln=1)
 
     clausulas = parecer_tecnico.get("clausulas_faltantes", [])
@@ -65,8 +79,8 @@ def _adicionar_parecer_tecnico(pdf: FPDF, parecer_tecnico: Dict[str, List[str]])
         pdf.multi_cell(0, 8, "Riscos: " + "; ".join(riscos))
     pdf.ln(2)
 
-def _adicionar_parecer_final(pdf: FPDF, parecer_final: Dict[str, str]) -> None:
-    pdf.set_font("DejaVu", "", 12)
+def _adicionar_parecer_final(pdf: FPDF, parecer_final: Dict[str, str], fonte: str) -> None:
+    pdf.set_font(fonte, "", 12)
     pdf.cell(0, 10, "Parecer Final", ln=1)
     pdf.multi_cell(0, 8, parecer_final.get("parecer_estruturado", ""))
     pdf.ln(2)
@@ -85,11 +99,16 @@ def gerar_relatorio_pdf(
     pdf = FPDF()
     pdf.add_page()
 
-    _adicionar_titulo(pdf)
-    _adicionar_secao_dados(pdf, dados_ingestao)
-    _adicionar_entidades_relacoes(pdf, grafo)
-    _adicionar_parecer_tecnico(pdf, parecer_tecnico)
-    _adicionar_parecer_final(pdf, parecer_final)
+    fonte = _carregar_fonte(pdf)
+
+    try:
+        _adicionar_titulo(pdf, fonte)
+        _adicionar_secao_dados(pdf, dados_ingestao, fonte)
+        _adicionar_entidades_relacoes(pdf, grafo, fonte)
+        _adicionar_parecer_tecnico(pdf, parecer_tecnico, fonte)
+        _adicionar_parecer_final(pdf, parecer_final, fonte)
+    except Exception as exc:  # noqa: BLE001
+        print(f"Erro ao gerar relatorio: {exc}")
 
     caminho = os.path.join("reports", f"relatorio_{grafo.get('graph_id')}.pdf")
     pdf.output(caminho)
