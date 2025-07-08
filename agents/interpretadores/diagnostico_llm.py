@@ -1,84 +1,61 @@
-"""Orquestrador principal do pipeline jurídico.
+# coding: utf-8
+"""Agente cognitivo que interpreta juridicamente cláusulas contratuais via LLM (GPT-4)."""
 
-Este módulo centraliza as chamadas de cada agente do pipeline para que o
-processo possa ser executado de forma encadeada e modular. O pipeline
-atualmente conta com:
-- Agente de ingestão
-- Agente de construção de grafo
-- Agente revisor técnico
-- Agente interpretador com LLM
-- Agente parecerista
-- Agente exportador (PDF)
+from typing import Dict, Any
+import openai
+import os
+import json
+
+# Simulador inicial: coloque sua chave real se for usar em produção
+oai_key = os.getenv("OPENAI_API_KEY") or "sk-FAKE-KEY-FOR-DEBUG"
+
+openai.api_key = oai_key
+
+
+# Prompt base para avaliação jurídica de cláusulas
+def gerar_prompt(tipo: str, clausula: str) -> str:
+    return f"""
+Você é um advogado especialista em contratos empresariais. Analise a seguinte cláusula extraída de um contrato de prestação de serviços:
+
+Cláusula: {clausula}
+
+Tipo de cláusula: {tipo}
+
+Com base nisso, responda com um JSON contendo:
+- \"presente\": se a cláusula está presente e reconhecível
+- \"completude\": um número de 0 a 100 indicando o quanto a cláusula cobre os elementos esperados
+- \"juridicamente_aceitavel\": true ou false, baseado na qualidade da redação e segurança jurídica
+- \"comentario\": uma breve análise crítica da cláusula
+- \"risco\": classificado como \"baixo\", \"médio\" ou \"alto\"
+
+Responda apenas com JSON.
 """
 
-from agents.ingestores.ingestor import processar_documento
-from agents.extratores.graph_builder import construir_grafo
-from agents.revisores.revisor_contratos import revisar_contrato
-from agents.interpretadores.avaliador_llm import avaliar_clausulas_com_llm
-from agents.pareceristas.parecerista import produzir_parecer
-from agents.exportadores.exportador import gerar_relatorio_pdf
+
+def parsear_resposta(resposta: str) -> Dict[str, Any]:
+    try:
+        return json.loads(resposta.strip())
+    except json.JSONDecodeError:
+        return {"erro": "Resposta inválida do modelo", "raw": resposta}
 
 
-def executar_ingestao(caminho_arquivo: str) -> dict:
-    return processar_documento(caminho_arquivo)
+def diagnosticar_clausula(clausula: str, tipo: str, contexto: Dict[str, Any] = None) -> Dict[str, Any]:
+    prompt = gerar_prompt(tipo, clausula)
+
+    try:
+        completion = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "Você é um advogado contratualista experiente."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.2,
+            max_tokens=500,
+        )
+        resposta = completion.choices[0].message.content
+        return parsear_resposta(resposta)
+    except Exception as e:
+        return {"erro": str(e)}
 
 
-def executar_graph_builder(texto: str) -> dict:
-    return construir_grafo(texto)
-
-
-def executar_revisor(entidades: list, relacoes: list) -> dict:
-    return revisar_contrato(entidades, relacoes)
-
-
-def executar_diagnostico_llm(entidades: list) -> list:
-    return avaliar_clausulas_com_llm(entidades)
-
-
-def executar_parecerista(entidades: list, relacoes: list, parecer: dict) -> dict:
-    return produzir_parecer(entidades, relacoes, parecer)
-
-
-def executar_exportador(
-    dados_ingestao: dict,
-    grafo: dict,
-    parecer_tecnico: dict,
-    parecer_final: dict,
-) -> str:
-    return gerar_relatorio_pdf(dados_ingestao, grafo, parecer_tecnico, parecer_final)
-
-
-def run_pipeline(caminho_arquivo: str) -> dict:
-    # 1) Ingestão do documento
-    dados_ingestao = executar_ingestao(caminho_arquivo)
-
-    # 2) Construção do grafo jurídico
-    grafo = executar_graph_builder(dados_ingestao["texto"])
-
-    # 3) Revisão jurídica técnica (simbólica)
-    parecer_tecnico = executar_revisor(grafo["entidades"], grafo["relacoes"])
-
-    # 4) Diagnóstico interpretativo via LLM
-    diagnosticos_llm = executar_diagnostico_llm(grafo["entidades"])
-    grafo["diagnosticos_llm"] = diagnosticos_llm
-
-    # 5) Geração do parecer final
-    parecer_final = executar_parecerista(grafo["entidades"], grafo["relacoes"], parecer_tecnico)
-
-    # 6) Geração do relatório PDF final
-    caminho_pdf = executar_exportador(dados_ingestao, grafo, parecer_tecnico, parecer_final)
-
-    # 7) Resposta consolidada
-    return {
-        "status": "ok",
-        "etapa": "pipeline completo",
-        "tipo_entrada": dados_ingestao["tipo_entrada"],
-        "texto": dados_ingestao.get("texto"),
-        "entidades": grafo["entidades"],
-        "relacoes": grafo["relacoes"],
-        "graph_id": grafo["graph_id"],
-        "diagnosticos_llm": diagnosticos_llm,
-        "parecer_tecnico": parecer_tecnico,
-        "parecer_final": parecer_final,
-        "relatorio_pdf": caminho_pdf,
-    }
+__all__ = ["diagnosticar_clausula"]

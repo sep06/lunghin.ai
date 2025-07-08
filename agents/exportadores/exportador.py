@@ -15,30 +15,37 @@ from pathlib import Path
 _DEFAULT_FONT = "Helvetica"
 FONT_PATH = Path(__file__).resolve().parent.parent / "fonts" / "DejaVuSans.ttf"
 
+
+
 def _criar_pasta_reports() -> None:
     os.makedirs("reports", exist_ok=True)
+
 
 def _texto_resumido(texto: str, limite: int = 500) -> str:
     texto_limpo = texto.strip()
     return texto_limpo[:limite] + "..." if len(texto_limpo) > limite else texto_limpo
 
+
 def _carregar_fonte(pdf: FPDF) -> str:
     """Tenta carregar a fonte customizada e retorna o nome da fonte usada."""
-    if FONT_PATH.exists():
-        try:
-            pdf.add_font("DejaVu", "", str(FONT_PATH), uni=True)
+    try:
+        font_path = FONT_PATH.as_posix()
+        if os.path.exists(font_path):
+            pdf.add_font("DejaVu", "", font_path, uni=True)
             return "DejaVu"
-        except Exception as exc:  # noqa: BLE001
-            print(f"Falha ao carregar fonte personalizada: {exc}")
-    else:
-        print("Fonte personalizada nao encontrada, usando padrao")
-    return _DEFAULT_FONT
+        else:
+            raise FileNotFoundError(f"Fonte não encontrada em {font_path}")
+    except Exception as exc:
+        print(f"⚠️ Erro ao carregar fonte personalizada: {exc}")
+        print("🟡 Usando fonte padrão Helvetica.")
+        return _DEFAULT_FONT
 
 
 def _adicionar_titulo(pdf: FPDF, fonte: str) -> None:
     pdf.set_font(fonte, "", 16)
     pdf.cell(0, 10, "Relatório de Análise Contratual", ln=1, align="C")
     pdf.ln(5)
+
 
 def _adicionar_secao_dados(pdf: FPDF, dados_ingestao: Dict[str, str], fonte: str) -> None:
     pdf.set_font(fonte, "", 12)
@@ -47,6 +54,7 @@ def _adicionar_secao_dados(pdf: FPDF, dados_ingestao: Dict[str, str], fonte: str
     texto = _texto_resumido(dados_ingestao.get("texto", ""))
     pdf.multi_cell(0, 10, texto)
     pdf.ln(2)
+
 
 def _adicionar_entidades_relacoes(pdf: FPDF, grafo: Dict[str, List[Dict[str, str]]], fonte: str) -> None:
     pdf.set_font(fonte, "", 12)
@@ -61,6 +69,7 @@ def _adicionar_entidades_relacoes(pdf: FPDF, grafo: Dict[str, List[Dict[str, str
         linha = f"{rel.get('origem')} -> {rel.get('destino')} ({rel.get('tipo')})"
         pdf.multi_cell(0, 8, linha)
     pdf.ln(2)
+
 
 def _adicionar_parecer_tecnico(pdf: FPDF, parecer_tecnico: Dict[str, List[str]], fonte: str) -> None:
     pdf.set_font(fonte, "", 12)
@@ -79,6 +88,7 @@ def _adicionar_parecer_tecnico(pdf: FPDF, parecer_tecnico: Dict[str, List[str]],
         pdf.multi_cell(0, 8, "Riscos: " + "; ".join(riscos))
     pdf.ln(2)
 
+
 def _adicionar_parecer_final(pdf: FPDF, parecer_final: Dict[str, str], fonte: str) -> None:
     pdf.set_font(fonte, "", 12)
     pdf.cell(0, 10, "Parecer Final", ln=1)
@@ -87,6 +97,7 @@ def _adicionar_parecer_final(pdf: FPDF, parecer_final: Dict[str, str], fonte: st
     pdf.multi_cell(0, 8, "Recomendação: " + parecer_final.get("recomendacao", ""))
     pdf.multi_cell(0, 8, "Status: " + parecer_final.get("status_final", ""))
     pdf.ln(2)
+
 
 def gerar_relatorio_pdf(
     dados_ingestao: Dict[str, str],
@@ -113,5 +124,6 @@ def gerar_relatorio_pdf(
     caminho = os.path.join("reports", f"relatorio_{grafo.get('graph_id')}.pdf")
     pdf.output(caminho)
     return caminho
+
 
 __all__ = ["gerar_relatorio_pdf"]
