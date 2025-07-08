@@ -17,6 +17,7 @@ from agents.ingestores.ingestor import processar_documento
 from agents.extratores.graph_builder import construir_grafo
 from agents.revisores.revisor_contratos import revisar_contrato
 from agents.pareceristas.parecerista import produzir_parecer
+from agents.interpretadores.avaliador_llm import avaliar_clausulas_com_llm
 from agents.exportadores.relatorio_pdf import gerar_relatorio_pdf
 from agents.interpretadores.avaliador_llm import avaliar_clausulas_com_llm
 
@@ -40,7 +41,8 @@ def executar_exportador(
     parecer_final: dict,
     avaliacoes_llm: list,
 ) -> str:
-    return gerar_relatorio_pdf(dados_ingestao, grafo, parecer_tecnico, parecer_final, avaliacoes_llm)
+    return gerar_relatorio_pdf(dados_ingestao, grafo, parecer_tecnico, parecer_final)
+
 
 def run_pipeline(caminho_arquivo: str) -> dict:
     print("🚀 Iniciando pipeline")
@@ -56,12 +58,12 @@ def run_pipeline(caminho_arquivo: str) -> dict:
     avaliacoes_llm = avaliar_clausulas_com_llm(grafo["entidades"])
     print("🧠 Etapa 3.5: avaliação simbólica LLM concluída")
 
-    parecer_final = executar_parecerista(grafo["entidades"], grafo["relacoes"], parecer_tecnico)
+    parecer_final = executar_parecerista(
+        grafo["entidades"], grafo["relacoes"], parecer_tecnico
+    )
     print("✅ Etapa 4: parecer final gerado")
 
-    caminho_pdf = executar_exportador(
-        dados_ingestao, grafo, parecer_tecnico, parecer_final, avaliacoes_llm
-    )
+    caminho_pdf = executar_exportador(dados_ingestao, grafo, parecer_tecnico, parecer_final)
     print(f"✅ Etapa 5: relatório PDF gerado em {caminho_pdf}")
 
     resultado = {
