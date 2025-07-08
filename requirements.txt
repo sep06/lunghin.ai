@@ -6,6 +6,7 @@ Pillow
 docx2txt
 spacy
 fpdf
+openai
 fastapi
 uvicorn
 
