@@ -10,7 +10,7 @@ from fpdf import FPDF
 from pathlib import Path
 
 _DEFAULT_FONT = "Helvetica"
-FONT_PATH = Path(__file__).resolve().parent.parent / "fonts" / "DejaVuSans.ttf"
+FONT_PATH = Path(__file__).resolve().parents[2] / "fonts" / "DejaVuSans.ttf"
 
 def _criar_pasta_reports() -> None:
     os.makedirs("reports", exist_ok=True)
