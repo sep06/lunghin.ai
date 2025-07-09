@@ -12,6 +12,9 @@ atualmente conta com:
 
 import json
 from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()
+
 
 from agents.ingestores.ingestor import processar_documento
 from agents.extratores.graph_builder import construir_grafo

@@ -2,6 +2,9 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
 import os
 import uuid
+from dotenv import load_dotenv
+load_dotenv()
+
 
 from crew.juriscrew import run_pipeline  # Certifique-se que isso existe ou crie um mock por enquanto
 

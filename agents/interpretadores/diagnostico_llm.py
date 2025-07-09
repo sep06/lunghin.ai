@@ -7,20 +7,14 @@ import json
 import os
 from typing import Any, Dict
 
-try:  # Importa openai apenas se estiver disponível
-    import openai  # type: ignore
-except Exception as exc:  # pragma: no cover - dependência opcional
-    openai = None  # type: ignore
+try:
+    from openai import OpenAI  # Novo client da versão >=1.0.0
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY") or "sk-FAKE-KEY-FOR-DEBUG")
+except Exception as exc:
+    client = None
     _OPENAI_IMPORT_ERROR = exc
 
-# Simulador inicial: coloque sua chave real se for usar em produção
-oai_key = os.getenv("OPENAI_API_KEY") or "sk-FAKE-KEY-FOR-DEBUG"
 
-if openai is not None:
-    openai.api_key = oai_key
-
-
-# Prompt base para avaliação jurídica de cláusulas
 def gerar_prompt(tipo: str, clausula: str) -> str:
     return f"""
 Você é um advogado especialista em contratos empresariais. Analise a seguinte cláusula extraída de um contrato de prestação de serviços:
@@ -30,11 +24,11 @@ Cláusula: {clausula}
 Tipo de cláusula: {tipo}
 
 Com base nisso, responda com um JSON contendo:
-- \"presente\": se a cláusula está presente e reconhecível
-- \"completude\": um número de 0 a 100 indicando o quanto a cláusula cobre os elementos esperados
-- \"juridicamente_aceitavel\": true ou false, baseado na qualidade da redação e segurança jurídica
-- \"comentario\": uma breve análise crítica da cláusula
-- \"risco\": classificado como \"baixo\", \"médio\" ou \"alto\"
+- "presente": se a cláusula está presente e reconhecível
+- "completude": um número de 0 a 100 indicando o quanto a cláusula cobre os elementos esperados
+- "juridicamente_aceitavel": true ou false, baseado na qualidade da redação e segurança jurídica
+- "comentario": uma breve análise crítica da cláusula
+- "risco": classificado como "baixo", "médio" ou "alto"
 
 Responda apenas com JSON.
 """
@@ -48,17 +42,17 @@ def parsear_resposta(resposta: str) -> Dict[str, Any]:
 
 
 def diagnosticar_clausula(clausula: str, tipo: str, contexto: Dict[str, Any] = None) -> Dict[str, Any]:
-    if openai is None:
-        return {"erro": f"openai não disponível: {_OPENAI_IMPORT_ERROR}"}
+    if client is None:
+        return {"erro": f"OpenAI client não disponível: {_OPENAI_IMPORT_ERROR}"}
 
     prompt = gerar_prompt(tipo, clausula)
 
     try:
-        completion = openai.ChatCompletion.create(
+        completion = client.chat.completions.create(
             model="gpt-4",
             messages=[
                 {"role": "system", "content": "Você é um advogado contratualista experiente."},
-                {"role": "user", "content": prompt},
+                {"role": "user", "content": prompt}
             ],
             temperature=0.2,
             max_tokens=500,
