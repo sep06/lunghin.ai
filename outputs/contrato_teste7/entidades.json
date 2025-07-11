@@ -1,0 +1,65 @@
+{
+  "entidades": [
+    {
+      "texto": "31.456.987/0001-22",
+      "label": "CNPJ"
+    },
+    {
+      "texto": "42.789.302/0001-11",
+      "label": "CNPJ"
+    },
+    {
+      "texto": "CLÁUSULA PRIMEIRA – OBJETO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CLÁUSULA SEXTA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CNPJ",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "DIAS",
+      "label": "PRAZO"
+    },
+    {
+      "texto": "FGTS",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "FORO",
+      "label": "FORO"
+    },
+    {
+      "texto": "MEDEIROS SOLUÇÕES TÉCNICAS ME",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "MEI",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "MULTA",
+      "label": "MULTA"
+    },
+    {
+      "texto": "PARÁGRAFO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "PRAZO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "RESCISAO",
+      "label": "RESCISAO"
+    }
+  ],
+  "relacoes": []
+}

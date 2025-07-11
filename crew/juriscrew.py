@@ -15,14 +15,13 @@ from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
 
-
 from agents.ingestores.ingestor import processar_documento
 from agents.extratores.graph_builder import construir_grafo
 from agents.revisores.revisor_contratos import revisar_contrato
 from agents.pareceristas.parecerista import produzir_parecer
 from agents.exportadores.relatorio_pdf import gerar_relatorio_pdf
 from agents.interpretadores.avaliador_llm import avaliar_clausulas_com_llm
-
+from agents.validadores.detector_campos import detectar_campos_em_branco  # NOVO
 
 def executar_ingestao(caminho_arquivo: str) -> dict:
     return processar_documento(caminho_arquivo)
@@ -62,6 +61,10 @@ def run_pipeline(caminho_arquivo: str) -> dict:
     parecer_final = executar_parecerista(grafo["entidades"], grafo["relacoes"], parecer_tecnico)
     print("✅ Etapa 4: parecer final gerado")
 
+    # NOVO: Detecção de campos em branco
+    campos_em_branco = detectar_campos_em_branco(dados_ingestao["texto"])
+    print(f"🕳️ Etapa 4.5: campos em branco detectados: {len(campos_em_branco)} encontrados")
+
     caminho_pdf = executar_exportador(
         dados_ingestao, grafo, parecer_tecnico, parecer_final, avaliacoes_llm
     )
@@ -78,6 +81,7 @@ def run_pipeline(caminho_arquivo: str) -> dict:
         "parecer_tecnico": parecer_tecnico,
         "parecer_final": parecer_final,
         "avaliacoes_llm": avaliacoes_llm,
+        "campos_em_branco": campos_em_branco,  # INCLUIDO AQUI
         "relatorio_pdf": str(caminho_pdf) if isinstance(caminho_pdf, Path) else caminho_pdf,
     }
 
@@ -88,6 +92,5 @@ def run_pipeline(caminho_arquivo: str) -> dict:
         print(f"❌ Erro ao serializar JSON final: {e}")
 
     return resultado
-
 
 __all__ = ["run_pipeline"]

@@ -1,0 +1,89 @@
+{
+  "entidades": [
+    {
+      "texto": "15/03/1989",
+      "label": "DATA"
+    },
+    {
+      "texto": "AGÊNCIA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "AV. PAULISTA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "BANCO ITAÚ (341), AGÊNCIA 0456, CONTA CORRENTE 19238-1, OU EM ESPÉCIE, MEDIANTE EMISSÃO DE RECIBO DE PAGAMENTO. 2.1.1. O VALOR SERÁ PAGO EM 4 PARCELAS MENSAIS DE R$ 1.000,00 (MIL REAIS) CADA, SENDO A PRIMEIRA NO ATO DA ASSINATURA DESTE INSTRUMENTO E AS DEMAIS COM VENCIMENTO TODO DIA 25 DE CADA MÊS. 2.2. EM CASO DE ATRASO, INCIDIRÁ JUROS DE 1% AO MÊS, ACRESCIDO DE MULTA DE 2% SOBRE O VALOR INADIMPLIDO. 2.3. AS DESPESAS E CUSTAS RELACIONADAS AO OBJETO CONTRATUAL NÃO ESTÃO INCLUÍDAS NO VALOR, DEVENDO SER REEMBOLSADAS PELO CONTRATANTE NO PRAZO DE ATÉ 30 DIAS APÓS COMPROVAÇÃO. 3. DAS GARANTIAS 3.1. O CONTRATANTE RECONHECE QUE ESTE CONTRATO É DE MEIO, E NÃO DE RESULTADO. 4. DAS OBRIGAÇÕES DO CONTRATANTE 4.1. FORNECER DADOS E DOCUMENTOS EM TEMPO HÁBIL. 4.2. O CONTRATADO NÃO SE RESPONSABILIZA POR DOCUMENTOS OU INFORMAÇÕES INIDÔNEAS, INCOMPLETAS OU OMITIDAS. 5. DA VALIDADE 5.1. O CONTRATO TERÁ VALIDADE A PARTIR DA ASSINATURA E VIGORARÁ ENQUANTO PERDURAR A PRESTAÇÃO DOS SERVIÇOS. 6. DA RESCISÃO 6.1. EM CASO DE DOLO OU CULPA DO CONTRATANTE, O CONTRATADO PODERÁ RESCINDIR O CONTRATO E EXIGIR O PAGAMENTO IMEDIATO DO VALOR TOTAL. 6.2. O CONTRATO SERÁ RESOLVIDO DE PLENO DIREITO EM CASO DE PROTESTO DE TÍTULO SEM SUSTAÇÃO. 6.3. O CONTRATADO PODERÁ RESCINDIR O CONTRATO MEDIANTE AVISO PRÉVIO DE 30 DIAS.",
+      "label": "CONTRATADO"
+    },
+    {
+      "texto": "COMPLIANCE",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONFIDENCIALIDADE",
+      "label": "CONFIDENCIALIDADE"
+    },
+    {
+      "texto": "CONTA CORRENTE 19238-1",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "DIAS",
+      "label": "PRAZO"
+    },
+    {
+      "texto": "EXTRA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "FORO",
+      "label": "FORO"
+    },
+    {
+      "texto": "LGPD",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "MULTA",
+      "label": "MULTA"
+    },
+    {
+      "texto": "OBRIGAÇÕES",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "OUTORGADO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "PREÇO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "R$ 1.000,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "R$ 4.000,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "RESCISAO",
+      "label": "RESCISAO"
+    },
+    {
+      "texto": "SERVIÇOS",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "TÍTULO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "VALIDADE",
+      "label": "EMPRESA"
+    }
+  ],
+  "relacoes": []
+}

@@ -10,13 +10,12 @@ from fpdf import FPDF
 from pathlib import Path
 
 _DEFAULT_FONT = "Helvetica"
-FONT_PATH = Path(__file__).resolve().parents[2] / "fonts" / "DejaVuSans.ttf"
+
 
 def _criar_pasta_reports() -> None:
     os.makedirs("reports", exist_ok=True)
 
 def _texto_resumido(texto: str, limite: int = 500) -> str:
-    """Retorna um resumo seguro do texto informado."""
     if not texto:
         return ""
     texto_limpo = str(texto).strip()
@@ -24,16 +23,20 @@ def _texto_resumido(texto: str, limite: int = 500) -> str:
 
 def _carregar_fonte(pdf: FPDF) -> str:
     try:
-        font_path = FONT_PATH.as_posix()
-        if os.path.exists(font_path):
-            pdf.add_font("DejaVu", "", font_path, uni=True)
+        font_path = Path(__file__).resolve().parents[2] / "fonts" / "DejaVuSans.ttf"
+        print(f"🔎 Verificando fonte em: {font_path}")
+        if font_path.exists():
+            pdf.add_font("DejaVu", "", font_path.as_posix(), uni=True)
+            print("✅ Fonte DejaVu carregada com sucesso.")
             return "DejaVu"
         else:
-            raise FileNotFoundError(f"Fonte não encontrada em {font_path}")
+            raise FileNotFoundError(f"❌ Fonte não encontrada em {font_path}")
     except Exception as exc:
         print(f"⚠️ Erro ao carregar fonte personalizada: {exc}")
         print("🟡 Usando fonte padrão Helvetica.")
         return _DEFAULT_FONT
+
+
 
 def _adicionar_titulo(pdf: FPDF, fonte: str) -> None:
     pdf.set_font(fonte, "", 16)
@@ -107,8 +110,6 @@ def gerar_relatorio_pdf(
     parecer_final: Dict[str, str],
     avaliacoes_llm: List[Dict[str, Any]] | None = None,
 ) -> str:
-    """Gera o relatório consolidado em PDF e devolve o caminho absoluto."""
-
     print("[PDF] Iniciando geração do relatório")
     _criar_pasta_reports()
 
@@ -117,7 +118,6 @@ def gerar_relatorio_pdf(
 
     fonte = _carregar_fonte(pdf)
 
-    # Sanitização preventiva dos dados
     dados_seguro = {
         "tipo_entrada": str(dados_ingestao.get("tipo_entrada", "")) if dados_ingestao else "",
         "texto": dados_ingestao.get("texto") or "",
@@ -155,14 +155,15 @@ def gerar_relatorio_pdf(
         print(f"❌ Erro ao preencher PDF: {exc}")
         raise
 
-    caminho = Path("reports") / f"relatorio_{grafo_seguro['graph_id']}.pdf"
+    caminho = Path(__file__).resolve().parents[2] / "reports" / f"relatorio_{grafo_seguro['graph_id']}.pdf"
     try:
-        pdf.output(caminho.as_posix())
+        pdf.output(name=str(caminho), dest="F")  # Força salvamento absoluto
         caminho_abs = str(caminho.resolve())
         print(f"[PDF] Relatório salvo em {caminho_abs}")
         return caminho_abs
     except Exception as exc:
         print(f"❌ Erro ao salvar PDF: {exc}")
         raise
+
 
 __all__ = ["gerar_relatorio_pdf"]

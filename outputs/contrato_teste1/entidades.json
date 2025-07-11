@@ -1,0 +1,133 @@
+{
+  "entidades": [
+    {
+      "texto": "10/01/2023",
+      "label": "DATA"
+    },
+    {
+      "texto": "10/02/2023",
+      "label": "DATA"
+    },
+    {
+      "texto": "10/03/2023",
+      "label": "DATA"
+    },
+    {
+      "texto": "10/04/2023",
+      "label": "DATA"
+    },
+    {
+      "texto": "10/05/2023",
+      "label": "DATA"
+    },
+    {
+      "texto": "10/06/2023",
+      "label": "DATA"
+    },
+    {
+      "texto": "10/07/2023",
+      "label": "DATA"
+    },
+    {
+      "texto": "10/08/2023",
+      "label": "DATA"
+    },
+    {
+      "texto": "10/09/2023",
+      "label": "DATA"
+    },
+    {
+      "texto": "10/10/2023",
+      "label": "DATA"
+    },
+    {
+      "texto": "10/11/2023",
+      "label": "DATA"
+    },
+    {
+      "texto": "10/12/2023",
+      "label": "DATA"
+    },
+    {
+      "texto": "42.789.154/0001-96",
+      "label": "CNPJ"
+    },
+    {
+      "texto": "ANEXO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "AVALIAÇÃO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "BEATRIZ",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "DIAS",
+      "label": "PRAZO"
+    },
+    {
+      "texto": "EXCLUSIVIDADE",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "FORO",
+      "label": "FORO"
+    },
+    {
+      "texto": "LGPD",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "MULTA",
+      "label": "MULTA"
+    },
+    {
+      "texto": "PARTES",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "PRAZO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "PREÇO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "PRIMEIRA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "R$ 1.360,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "R$ 16.320,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "RESCISAO",
+      "label": "RESCISAO"
+    },
+    {
+      "texto": "RESCISÃO IMOTIVADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "SERVIÇOS",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "VALIDADE",
+      "label": "EMPRESA"
+    }
+  ],
+  "relacoes": []
+}

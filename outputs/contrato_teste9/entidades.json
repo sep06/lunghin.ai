@@ -1,0 +1,101 @@
+{
+  "entidades": [
+    {
+      "texto": "38.852.144/0001-85",
+      "label": "CNPJ"
+    },
+    {
+      "texto": "42.659.338/0001-02",
+      "label": "CNPJ"
+    },
+    {
+      "texto": "ALTERAÇÃO PARÁGRAFO PRIMEIRO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CLÁUSULA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CNPJ",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "DIAS",
+      "label": "PRAZO"
+    },
+    {
+      "texto": "FORO",
+      "label": "FORO"
+    },
+    {
+      "texto": "FORO FICA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "IDENTIFICAÇÃO DAS PARTES",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "MF PROPRIEDADE INTELECTUAL LTDA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "MULTA",
+      "label": "MULTA"
+    },
+    {
+      "texto": "NOVA ÓPTICA LTDA., COM SEDE EM BELO HORIZONTE, NO ENDEREÇO RUA SANTA RITA DURÃO, Nº 175, NO BAIRRO FUNCIONÁRIOS, CEP 30140-111, NO ESTADO DE MINAS GERAIS, INSCRITA NO CNPJ SOB O Nº 42.659.338/0001-02, ENDEREÇO ELETRÔNICO CONTATO@NOVAOPTICA.COM.BR, NESTE ATO REPRESENTADA PELO SEU DIRETOR MARCOS PAULO FERREIRA, CARTEIRA DE IDENTIDADE Nº MG-14.255.789, CPF Nº 138.589.777-22, RESIDENTE E DOMICILIADO NA RUA FRANCISCO SALES, Nº 420, NO BAIRRO FLORESTA, CEP 30150-220, NA CIDADE DE BELO HORIZONTE, NO ESTADO DE MINAS GERAIS. CONTRATADA: MF PROPRIEDADE INTELECTUAL LTDA., COM SEDE EM SÃO PAULO, NO ENDEREÇO RUA DOUTOR NETO DE ARAÚJO, Nº 90, NO BAIRRO VILA MARIANA, CEP 04011-000, NO ESTADO DE SÃO PAULO, INSCRITA NO CNPJ SOB O Nº 38.852.144/0001-85, ENDEREÇO ELETRÔNICO MFPROPRIEDADEINTELECTUAL@GMAIL.COM, NESTE ATO REPRESENTADA PELO SEU DIRETOR MIQUEIAS FERNANDES, CARTEIRA DE IDENTIDADE Nº SP-48.223.199, CPF Nº 295.654.098-00, RESIDENTE E DOMICILIADO NA RUA FREI JOÃO, Nº 235, NO BAIRRO ACLIMAÇÃO, CEP 01531-001, NA CIDADE DE SÃO PAULO, NO ESTADO DE SÃO PAULO. PELO PRESENTE INSTRUMENTO, AS PARTES, ADIANTE QUALIFICADAS, TÊM ENTRE SI JUSTO E CONTRATADO O PRESENTE CONTRATO PARTICULAR DE PRESTAÇÃO DE SERVIÇOS, QUE SE REGERÁ PELAS CLÁUSULAS E CONDIÇÕES ABAIXO. CLÁUSULA PRIMEIRA - DO OBJETO PELO PRESENTE INSTRUMENTO, A CONTRATANTE RESOLVE CONTRATAR A CONTRATADA PARA A PRESTAÇÃO DOS SEGUINTES SERVIÇOS: ● CRIAÇÃO E GESTÃO DE IDENTIDADE VISUAL ● DESENVOLVIMENTO DE ARTES PROMOCIONAIS MENSAIS ● CONSULTORIA CRIATIVA EM PROPRIEDADE INTELECTUAL CLÁUSULA SEGUNDA – DO PRAZO",
+      "label": "CONTRATANTE"
+    },
+    {
+      "texto": "OITAVA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "PAGAMENTO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "PARÁGRAFO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "PRAZO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "PRIMEIRA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "R$ 1.500,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "R$ 50,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "R$ 90,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "RESCISAO",
+      "label": "RESCISAO"
+    },
+    {
+      "texto": "RESCISÃO PARÁGRAFO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "SERVIÇOS",
+      "label": "EMPRESA"
+    }
+  ],
+  "relacoes": []
+}
