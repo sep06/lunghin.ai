@@ -1,21 +1,28 @@
 # coding: utf-8
-"""Agente revisor de contratos de prestacao de servicos empresariais.
+"""
+Agente revisor de contratos de prestação de serviços empresariais (v1.1).
 
-Este modulo analisa as entidades e relacoes extraidas do contrato para
-identificar clausulas obrigatorias ausentes, inconsistencias e possiveis
-riscos juridicos. A ideia e simular a atuacao de um advogado revisor de
-forma automatizada.
+Este módulo utiliza a nova arquitetura com extração inteligente de cláusulas,
+pontuação de risco, e validação de coerência jurídica.
 """
 
 from __future__ import annotations
 
 from typing import Dict, List
-import re
+from agents.pareceristas.lawlinker import justificar_clausula
+from agents.validadores.clause_correlator import verificar_dependencias
+from agents.interpretadores.extrator_clausulas import (
+    segmentar_por_regex,
+    classificar_clausulas,
+)
+from agents.pareceristas.clause_scorer import pontuar_clausula
+# from agents.validadores.clause_correlator import verificar_dependencias
 
+# Cláusulas consideradas obrigatórias para um contrato de prestação de serviços
 MANDATORY_CLAUSES = [
     "OBJETO",
     "PRAZO",
-    "VALOR",
+    "PAGAMENTO",
     "MULTA",
     "FORO",
     "RESCISAO",
@@ -23,80 +30,54 @@ MANDATORY_CLAUSES = [
 ]
 
 
-def verificar_clausulas_obrigatorias(entidades: List[Dict[str, str]]) -> List[str]:
-    """Retorna a lista de clausulas obrigatorias ausentes, com fallback semantico para PRAZO."""
+def revisar_contrato(texto_contrato: str) -> Dict:
+    """
+    Realiza a revisão completa do contrato textual:
+    - Extrai cláusulas
+    - Classifica tipos
+    - Identifica faltantes
+    - Aponta riscos e inconsistências com pontuação simbólica
+    """
 
-    labels = {e.get("label") for e in entidades}
-    texto_completo = " ".join(e["texto"] for e in entidades)
+    # Etapa 1: Segmentar e classificar cláusulas
+    blocos = segmentar_por_regex(texto_contrato)
+    clausulas = classificar_clausulas(blocos)
+    clausulas_index = {c["tipo_clausula"]: c for c in clausulas}
 
-    # Fallback para identificar "PRAZO" com base em menções a "vigência"
-    if "PRAZO" not in labels:
-        if re.search(r"\bvig[êe]ncia\b", texto_completo, re.I) or re.search(r"prazo indeterminado", texto_completo, re.I):
-            labels.add("PRAZO")
+    # Etapa 2: Verificar cláusulas obrigatórias ausentes
+    faltantes = [cl for cl in MANDATORY_CLAUSES if cl not in clausulas_index]
 
-    return [cl for cl in MANDATORY_CLAUSES if cl not in labels]
+    # Etapa 3: Pontuar cada cláusula e vincular justificativa legal
+    parecer_por_clausula = []
+    for clausula in clausulas:
+        tipo = clausula["tipo_clausula"]
+        conteudo = clausula["conteudo"]
 
+        pontuacao = pontuar_clausula(conteudo, tipo)
+        base_legal = justificar_clausula(tipo)
 
-def detectar_inconsistencias(
-    entidades: List[Dict[str, str]], relacoes: List[Dict[str, str]]
-) -> List[str]:
-    """Detecta incoerencias basicas entre as entidades e relacoes."""
-
-    labels = {e.get("label") for e in entidades}
-    inconsistencias: List[str] = []
-
-    if "VALOR" in labels and ("CONTRATANTE" not in labels or "CONTRATADO" not in labels):
-        inconsistencias.append(
-            "VALOR presente sem especificacao de CONTRATANTE ou CONTRATADO"
+        parecer_por_clausula.append(
+            {
+                "tipo": tipo,
+                "risco": pontuacao["risco"],
+                "qualidade": pontuacao["qualidade"],
+                "justificativa": pontuacao["justificativa"],
+                "base_legal": base_legal["justificativa"],
+                "fonte": base_legal["fonte"],
+            }
         )
 
-    if "PRAZO" in labels and "OBJETO" not in labels:
-        inconsistencias.append("PRAZO estabelecido sem definir o OBJETO do contrato")
+    # Etapa 4: (futura) Correlação jurídica entre cláusulas
+    correlacoes = verificar_dependencias(clausulas_index)  # verificar_dependencias(clausulas_index)
 
-    if "MULTA" not in labels and any(r.get("tipo") == "pagamento" for r in relacoes):
-        inconsistencias.append(
-            "Nao ha clausula de MULTA mesmo existindo obrigacao de pagamento"
-        )
-
-    return inconsistencias
-
-
-def avaliar_riscos_juridicos(
-    clausulas_faltantes: List[str], inconsistencias: List[str]
-) -> List[str]:
-    """Gera observacoes de risco a partir das falhas detectadas."""
-
-    riscos: List[str] = []
-    for clausula in clausulas_faltantes:
-        riscos.append(
-            f"Ausencia da clausula {clausula} pode comprometer a seguranca juridica"
-        )
-    for inc in inconsistencias:
-        riscos.append(f"Inconsistencia detectada: {inc}")
-    return riscos
-
-
-def revisar_contrato(
-    entidades: List[Dict[str, str]], relacoes: List[Dict[str, str]]
-) -> Dict[str, List[str] | str]:
-    """Executa todas as analises e retorna o parecer sintetico."""
-
-    clausulas_faltantes = verificar_clausulas_obrigatorias(entidades)
-    inconsistencias = detectar_inconsistencias(entidades, relacoes)
-    riscos = avaliar_riscos_juridicos(clausulas_faltantes, inconsistencias)
-    status = "ok" if not clausulas_faltantes and not inconsistencias else "atencao"
-
+    # Etapa 5: Compilar parecer
     return {
-        "clausulas_faltantes": clausulas_faltantes,
-        "inconsistencias": inconsistencias,
-        "riscos": riscos,
-        "status": status,
+        "clausulas_detectadas": [c["tipo_clausula"] for c in clausulas],
+        "clausulas_faltantes": faltantes,
+        "parecer_clausulas": parecer_por_clausula,
+        "correlacoes": correlacoes,
+        "status": "atencao" if faltantes else "ok",
     }
 
 
-__all__ = [
-    "verificar_clausulas_obrigatorias",
-    "detectar_inconsistencias",
-    "avaliar_riscos_juridicos",
-    "revisar_contrato",
-]
+__all__ = ["revisar_contrato"]

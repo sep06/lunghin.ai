@@ -1,4 +1,6 @@
-"""Orquestrador principal do pipeline jurídico.
+# coding: utf-8
+"""
+Orquestrador principal do pipeline jurídico.
 
 Este módulo centraliza as chamadas de cada agente do pipeline para que o
 processo possa ser executado de forma encadeada e modular. O pipeline
@@ -29,8 +31,8 @@ def executar_ingestao(caminho_arquivo: str) -> dict:
 def executar_graph_builder(texto: str) -> dict:
     return construir_grafo(texto)
 
-def executar_revisor(entidades: list, relacoes: list) -> dict:
-    return revisar_contrato(entidades, relacoes)
+def executar_revisor(texto: str) -> dict:
+    return revisar_contrato(texto)
 
 def executar_parecerista(entidades: list, relacoes: list, parecer: dict) -> dict:
     return produzir_parecer(entidades, relacoes, parecer)
@@ -52,7 +54,7 @@ def run_pipeline(caminho_arquivo: str) -> dict:
     grafo = executar_graph_builder(dados_ingestao["texto"])
     print("✅ Etapa 2: grafo construído")
 
-    parecer_tecnico = executar_revisor(grafo["entidades"], grafo["relacoes"])
+    parecer_tecnico = executar_revisor(dados_ingestao["texto"])
     print("✅ Etapa 3: revisão técnica concluída")
 
     avaliacoes_llm = avaliar_clausulas_com_llm(grafo["entidades"])
@@ -61,7 +63,6 @@ def run_pipeline(caminho_arquivo: str) -> dict:
     parecer_final = executar_parecerista(grafo["entidades"], grafo["relacoes"], parecer_tecnico)
     print("✅ Etapa 4: parecer final gerado")
 
-    # NOVO: Detecção de campos em branco
     campos_em_branco = detectar_campos_em_branco(dados_ingestao["texto"])
     print(f"🕳️ Etapa 4.5: campos em branco detectados: {len(campos_em_branco)} encontrados")
 
@@ -81,7 +82,7 @@ def run_pipeline(caminho_arquivo: str) -> dict:
         "parecer_tecnico": parecer_tecnico,
         "parecer_final": parecer_final,
         "avaliacoes_llm": avaliacoes_llm,
-        "campos_em_branco": campos_em_branco,  # INCLUIDO AQUI
+        "campos_em_branco": campos_em_branco,
         "relatorio_pdf": str(caminho_pdf) if isinstance(caminho_pdf, Path) else caminho_pdf,
     }
 
@@ -92,5 +93,6 @@ def run_pipeline(caminho_arquivo: str) -> dict:
         print(f"❌ Erro ao serializar JSON final: {e}")
 
     return resultado
+
 
 __all__ = ["run_pipeline"]
