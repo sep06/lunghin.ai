@@ -1,6 +1,102 @@
 {
   "entidades": [
     {
+      "texto": "SERVIÇOS",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "PARTES",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "PRIMEIRA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "OBJETO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "SERVIÇOS",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "AVALIAÇÃO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "EXCLUSIVIDADE",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "PREÇO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "OBJETO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "ANEXO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "PRAZO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "VALIDADE",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "RESCISÃO IMOTIVADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "LGPD",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "FORO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "BEATRIZ",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "TESTEMUNHAS",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "42.789.154/0001-96",
+      "label": "CNPJ"
+    },
+    {
       "texto": "10/01/2023",
       "label": "DATA"
     },
@@ -49,84 +145,60 @@
       "label": "DATA"
     },
     {
-      "texto": "42.789.154/0001-96",
-      "label": "CNPJ"
-    },
-    {
-      "texto": "ANEXO",
-      "label": "EMPRESA"
-    },
-    {
-      "texto": "AVALIAÇÃO",
-      "label": "EMPRESA"
-    },
-    {
-      "texto": "BEATRIZ",
-      "label": "EMPRESA"
-    },
-    {
-      "texto": "CONTRATADA",
-      "label": "EMPRESA"
-    },
-    {
-      "texto": "DIAS",
-      "label": "PRAZO"
-    },
-    {
-      "texto": "EXCLUSIVIDADE",
-      "label": "EMPRESA"
-    },
-    {
-      "texto": "FORO",
-      "label": "FORO"
-    },
-    {
-      "texto": "LGPD",
-      "label": "EMPRESA"
-    },
-    {
-      "texto": "MULTA",
-      "label": "MULTA"
-    },
-    {
-      "texto": "PARTES",
-      "label": "EMPRESA"
-    },
-    {
-      "texto": "PRAZO",
-      "label": "EMPRESA"
-    },
-    {
-      "texto": "PREÇO",
-      "label": "EMPRESA"
-    },
-    {
-      "texto": "PRIMEIRA",
-      "label": "EMPRESA"
+      "texto": "R$ 16.320,00",
+      "label": "VALOR"
     },
     {
       "texto": "R$ 1.360,00",
       "label": "VALOR"
     },
     {
-      "texto": "R$ 16.320,00",
+      "texto": "R$ 1.360,00",
       "label": "VALOR"
     },
     {
-      "texto": "RESCISAO",
-      "label": "RESCISAO"
+      "texto": "R$ 1.360,00",
+      "label": "VALOR"
     },
     {
-      "texto": "RESCISÃO IMOTIVADA",
-      "label": "EMPRESA"
+      "texto": "R$ 1.360,00",
+      "label": "VALOR"
     },
     {
-      "texto": "SERVIÇOS",
-      "label": "EMPRESA"
+      "texto": "R$ 1.360,00",
+      "label": "VALOR"
     },
     {
-      "texto": "VALIDADE",
-      "label": "EMPRESA"
+      "texto": "R$ 1.360,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "R$ 1.360,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "R$ 1.360,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "R$ 1.360,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "R$ 1.360,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "R$ 1.360,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "R$ 1.360,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "DIAS",
+      "label": "PRAZO"
     }
   ],
   "relacoes": []

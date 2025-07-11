@@ -1,6 +1,34 @@
 {
   "entidades": [
     {
+      "texto": "EXCELENTÍSSIMO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CERTA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "DIREITO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "DA PENHORA ONLINE",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "INCLUSÃO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "15/03/2020",
+      "label": "DATA"
+    },
+    {
+      "texto": "15/04/2020",
+      "label": "DATA"
+    },
+    {
       "texto": "15/03/2020",
       "label": "DATA"
     },
@@ -13,35 +41,27 @@
       "label": "DATA"
     },
     {
-      "texto": "CERTA",
-      "label": "EMPRESA"
-    },
-    {
-      "texto": "DA PENHORA ONLINE",
-      "label": "EMPRESA"
-    },
-    {
-      "texto": "DIREITO",
-      "label": "EMPRESA"
-    },
-    {
-      "texto": "EXCELENTÍSSIMO",
-      "label": "EMPRESA"
-    },
-    {
-      "texto": "INCLUSÃO",
-      "label": "EMPRESA"
-    },
-    {
-      "texto": "MULTA",
-      "label": "MULTA"
-    },
-    {
       "texto": "R$ 1.200,00",
       "label": "VALOR"
     },
     {
       "texto": "R$ 600,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "R$ 600,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "R$ 648,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "R$ 648,00",
+      "label": "VALOR"
+    },
+    {
+      "texto": "R$ 648,00",
       "label": "VALOR"
     },
     {

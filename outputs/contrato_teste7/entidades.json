@@ -1,22 +1,6 @@
 {
   "entidades": [
     {
-      "texto": "31.456.987/0001-22",
-      "label": "CNPJ"
-    },
-    {
-      "texto": "42.789.302/0001-11",
-      "label": "CNPJ"
-    },
-    {
-      "texto": "CLÁUSULA PRIMEIRA – OBJETO",
-      "label": "EMPRESA"
-    },
-    {
-      "texto": "CLÁUSULA SEXTA",
-      "label": "EMPRESA"
-    },
-    {
       "texto": "CNPJ",
       "label": "EMPRESA"
     },
@@ -25,28 +9,16 @@
       "label": "EMPRESA"
     },
     {
-      "texto": "DIAS",
-      "label": "PRAZO"
-    },
-    {
-      "texto": "FGTS",
+      "texto": "CONTRATADA",
       "label": "EMPRESA"
     },
     {
-      "texto": "FORO",
-      "label": "FORO"
-    },
-    {
-      "texto": "MEDEIROS SOLUÇÕES TÉCNICAS ME",
+      "texto": "CLÁUSULA PRIMEIRA – OBJETO",
       "label": "EMPRESA"
     },
     {
-      "texto": "MEI",
+      "texto": "CONTRATADA",
       "label": "EMPRESA"
-    },
-    {
-      "texto": "MULTA",
-      "label": "MULTA"
     },
     {
       "texto": "PARÁGRAFO",
@@ -57,8 +29,96 @@
       "label": "EMPRESA"
     },
     {
-      "texto": "RESCISAO",
+      "texto": "PARÁGRAFO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "FGTS",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "REMUNERAÇÃO",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CLÁUSULA SEXTA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "MEI",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "MEDEIROS SOLUÇÕES TÉCNICAS ME",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "CONTRATADA",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "TESTEMUNHAS",
+      "label": "EMPRESA"
+    },
+    {
+      "texto": "31.456.987/0001-22",
+      "label": "CNPJ"
+    },
+    {
+      "texto": "42.789.302/0001-11",
+      "label": "CNPJ"
+    },
+    {
+      "texto": "DIAS",
+      "label": "PRAZO"
+    },
+    {
+      "texto": "CLÁUSULA PRIMEIRA – OBJETO \nA CONTRATA",
+      "label": "OBJETO"
+    },
+    {
+      "texto": "CLÁUSULA SEXTA – RESCISÃO \nA CONTRATANTE poderá rescindir de pleno direito, conforme preceito legal, o \npresente contrato independentemente de qualquer formalidade judicial ou \nextrajudicial, na ocorrência de uma das seguintes hipóteses: \ni) Por infração a qualquer",
       "label": "RESCISAO"
+    },
+    {
+      "texto": "CLÁUSULA NONA – FORO \nFica eleito o foro",
+      "label": "FORO"
     }
   ],
   "relacoes": []
